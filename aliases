@@ -1,0 +1,58 @@
+
+# For ls
+
+alias lt='ls -tr'
+alias ld='ls -d */'
+alias lh='ls -gGh'
+#alias ll='ls -gGh'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+# Commons
+alias instaleaza='sudo apt install'
+alias cauta='sudo arp-scan -l'
+alias cl='clear'
+alias x='exit'
+alias reboot='sudo reboot'
+alias update='sudo apt update'
+alias webserver="echo $(ip a | grep global | awk '{print $2}') ; echo $PWD ; python -m SimpleHTTPServer"
+alias crearealias="pluma ~/.bash_aliases ; source ~/.bash_aliases"
+alias myip="echo $(nmcli -g ip4.address connection show `nmcli -g name connection show --active`)"
+#alias myip='echo $(ifconfig wlp0s20f3 | grep "inet " | cut -b 9- |cut -d" " -f2)'
+alias network='sudo service NetworkManager restart'
+alias conectare='nmcli con up'
+alias deconectare='nmcli con down'
+alias puteresemnal='nmcli -f SSID,signal dev wifi'
+alias copiere='rsync -ahP'
+
+
+
+
+#Nou
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)  tar xjf $1    ;;
+      *.tar.gz) tar xzf $1    ;;
+      *.bz2)    bunzip2 $1    ;;
+      *.rar)    rar x $1    ;;
+      *.gz)   gunzip $1   ;;
+      *.tar)    tar xf $1   ;;
+      *.tbz2)   tar xjf $1    ;;
+      *.tgz)    tar xzf $1    ;;
+      *.zip)    unzip $1    ;;
+      *.Z)    uncompress $1 ;;
+      *)      echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+nouscript () {
+echo "#!/bin/bash" > ./$1
+echo "#Creat pe data de $(date +%F)" >> ./$1
+chmod 755 ./$1
+pluma ./$1 &
+}
+
