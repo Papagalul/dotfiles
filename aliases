@@ -1,5 +1,5 @@
 
-# For ls
+# Pentru ls
 
 alias lt='ls -tr'
 alias ld='ls -d */'
@@ -7,28 +7,44 @@ alias lh='ls -gGh'
 #alias ll='ls -gGh'
 #alias la='ls -A'
 #alias l='ls -CF'
+alias cls='clear ; ls'
 
-# Commons
+# Comune
 alias instaleaza='sudo apt install'
 alias cauta='sudo arp-scan -l'
 alias cl='clear'
 alias x='exit'
 alias reboot='sudo reboot'
 alias update='sudo apt update'
-alias webserver="echo $(ip a | grep global | awk '{print $2}') ; echo $PWD ; python -m SimpleHTTPServer"
+alias webserver="echo $(ip a | grep global | awk '{print $2}') ; echo $PWD ; python3 -m http.server 9000"
 alias crearealias="pluma ~/.bash_aliases ; source ~/.bash_aliases"
-alias myip="echo $(nmcli -g ip4.address connection show `nmcli -g name connection show --active`)"
-#alias myip='echo $(ifconfig wlp0s20f3 | grep "inet " | cut -b 9- |cut -d" " -f2)'
+#alias myip="echo $(nmcli -g ip4.address connection show `nmcli -g name connection show --active`)"
+#alias myip='echo $(ifconfig wlan0 | grep "inet " | cut -b 9- |cut -d" " -f2)'
+alias myip='hostname -I'
 alias network='sudo service NetworkManager restart'
 alias conectare='nmcli con up'
 alias deconectare='nmcli con down'
 alias puteresemnal='nmcli -f SSID,signal dev wifi'
 alias copiere='rsync -ahP'
+alias schimbamac='macchanger -s  wlp0s20f3; sudo ifconfig wlp0s20f3 down; sudo macchanger -r wlp0s20f3; sudo ifconfig wlp0s20f3 up; macchanger -s  wlp0s20f3'
+alias numeretea='nmcli -g name connection show --active'
+alias placawifi='nmcli -g device connection show --active'
+alias 777='sudo chmod 777 -R'
+alias modx='sudo chmod +x'
 
+# Pentru Parrot
+alias upgrade='sudo apt update && sudo apt full-upgrade'
+alias start='/bin/bash ~/retea/dependinte/cufunctii.sh'
 
+nouscript () {
+echo "#!/bin/bash" > ./$1
+echo "#Creat pe data de $(date +%F)" >> ./$1
+chmod 755 ./$1
+codium ./$1 &
+}
 
+#Functii
 
-#Nou
 extract () {
   if [ -f $1 ] ; then
     case $1 in
@@ -48,11 +64,3 @@ extract () {
     echo "'$1' is not a valid file"
   fi
 }
-
-nouscript () {
-echo "#!/bin/bash" > ./$1
-echo "#Creat pe data de $(date +%F)" >> ./$1
-chmod 755 ./$1
-pluma ./$1 &
-}
-
