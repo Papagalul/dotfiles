@@ -1,3 +1,14 @@
+#Nou
+function lista () {
+head -200 $1 > tmp && tail -200 $1 >> tmp && less tmp && rm tmp
+}
+
+alias matrix='cmatrix -sru 10'
+alias spatiu='du -hd1 | sort -h'
+alias ora='date +%R'
+
+#Tmux
+alias gata='tmux kill-session'
 
 # Pentru ls
 
@@ -10,57 +21,27 @@ alias lh='ls -gGh'
 alias cls='clear ; ls'
 
 # Comune
-alias instaleaza='sudo apt install'
 alias cauta='sudo arp-scan -l'
 alias cl='clear'
 alias x='exit'
 alias reboot='sudo reboot'
 alias update='sudo apt update'
 alias webserver="echo $(ip a | grep global | awk '{print $2}') ; echo $PWD ; python3 -m http.server 9000"
-alias crearealias="pluma ~/.bash_aliases ; source ~/.bash_aliases"
-#alias myip="echo $(nmcli -g ip4.address connection show `nmcli -g name connection show --active`)"
-#alias myip='echo $(ifconfig wlan0 | grep "inet " | cut -b 9- |cut -d" " -f2)'
+alias crearealias="nano ~/.bash_aliases ; source ~/.bash_aliases"
 alias myip='hostname -I'
 alias network='sudo service NetworkManager restart'
 alias conectare='nmcli con up'
 alias deconectare='nmcli con down'
 alias puteresemnal='nmcli -f SSID,signal dev wifi'
 alias copiere='rsync -ahP'
-alias schimbamac='macchanger -s  wlp0s20f3; sudo ifconfig wlp0s20f3 down; sudo macchanger -r wlp0s20f3; sudo ifconfig wlp0s20f3 up; macchanger -s  wlp0s20f3'
 alias numeretea='nmcli -g name connection show --active'
 alias placawifi='nmcli -g device connection show --active'
-alias 777='sudo chmod 777 -R'
+alias 775='sudo chmod 775 -R'
 alias modx='sudo chmod +x'
-
-# Pentru Parrot
-alias upgrade='sudo apt update && sudo apt full-upgrade'
-alias start='/bin/bash ~/retea/dependinte/cufunctii.sh'
 
 nouscript () {
 echo "#!/bin/bash" > ./$1
 echo "#Creat pe data de $(date +%F)" >> ./$1
 chmod 755 ./$1
-codium ./$1 &
-}
-
-#Functii
-
-extract () {
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)  tar xjf $1    ;;
-      *.tar.gz) tar xzf $1    ;;
-      *.bz2)    bunzip2 $1    ;;
-      *.rar)    rar x $1    ;;
-      *.gz)   gunzip $1   ;;
-      *.tar)    tar xf $1   ;;
-      *.tbz2)   tar xjf $1    ;;
-      *.tgz)    tar xzf $1    ;;
-      *.zip)    unzip $1    ;;
-      *.Z)    uncompress $1 ;;
-      *)      echo "'$1' cannot be extracted via extract()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
+nano ./$1 &
 }
