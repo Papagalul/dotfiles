@@ -1,46 +1,60 @@
 
 
-set -g mouse on
-
-# remap prefix from 'C-b' to 'C-a'-----------------------------------------------
-unbind C-b
-set-option -g prefix C-a
-bind-key C-a send-prefix
-
-# switch panes using Alt-arrow without prefix
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
+set -g prefix2 C-a                        # GNU-Screen compatible prefix
+bind C-a send-prefix -2
 
 
-# reload config file (change file location to your the tmux.conf you want to use)
-bind r source-file ~/.tmux.conf
+# reload configuration
+bind r source-file ~/.tmux.conf \; display '~/.tmux.conf sourced'
 
-# switch panes using Alt-arrow without prefix
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
+setw -g automatic-rename on   # rename window to reflect current program
+set -g renumber-windows on    # renumber windows when a window is closed
+
+set -g set-titles on          # set terminal title
+
+set -g display-panes-time 800 # slightly longer pane indicators display time
+set -g display-time 1000      # slightly longer status messages display time
+
+set -g status-interval 10     # redraw status line every 10 seconds
 
 
-# split panes using [ and ]
-bind [ split-window -h
+# create session
+bind C-c new-session
+
+
+# split current window horizontally
 bind ] split-window -v
-unbind '"'
-unbind %
+# split current window vertically
+bind [ split-window -h
 
-# List of plugins
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'nhdaly/tmux-better-mouse-mode'
-set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'tmux-plugins/tmux-copycat'
-set -g @plugin 'tmux-plugins/tmux-open'
+# switch panes using Alt-arrow without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+#schimba panelurile intre ele cu , .
+bind . swap-pane -D       # swap current pane with the next one
+bind , swap-pane -U       # swap current pane with the previous one
 
 
+# pane resizing cu cifrele 2 4 6 8
+bind -r 4 resize-pane -L 2
+bind -r 2 resize-pane -D 2
+bind -r 8 resize-pane -U 2
+bind -r 6 resize-pane -R 2
 
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-#run -b '~/.tmux/plugins/tpm/tpm'
 
+# toggle mouse
+bind m run "cut -c3- ~/.tmux.conf | sh -s _toggle_mouse"
+
+
+# copy to X11 clipboard
+if -b 'command -v xsel > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xsel -i -b"'
+if -b '! command -v xsel > /dev/null 2>&1 && command -v xclip > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | xclip -i -selection clipboard >/dev/null 2>&1"'
+# copy to macOS clipboard
+if -b 'command -v pbcopy > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | pbcopy"'
+if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
+# copy to Windows clipboard
+if -b 'command -v clip.exe > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | clip.exe"'
+if -b '[ -c /dev/clipboard ]' 'bind y run -b "tmux save-buffer - > /dev/clipboard"'
